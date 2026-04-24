@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card shadow-sm dashboard-panel">
+
+    <div class="dashboard-top">
+
+        <div class="dashboard-title">
+            <h2>Panel Principal</h2>
+            <p>Bienvenido, <strong>{{ user.username }}</strong></p>
+            <p>Rol: <strong>{{ user.role }}</strong></p>
+            <p class="text-muted mb-0">
+                Sistema Administrativo Pacific Security Force
+            </p>
+        </div>
+
+        <img src="{{ url_for('static', filename='img/logo.png') }}"
+             class="dashboard-logo-right"
+             alt="Logo">
+
+    </div>
+
+    <div class="card-body p-4">
+
+        <div class="alerta-corporativa mb-4">
+            <strong>Alertas:</strong>
+            Facturas vencidas: <strong>{{ facturas_vencidas }}</strong> |
+            Contratos por vencer: <strong>{{ contratos_vencer }}</strong> |
+            Documentos pendientes: <strong>{{ documentos_pendientes }}</strong>
+        </div>
+
+        <h5 class="section-title mb-3">Resumen general</h5>
+
+        <div class="row g-3 mb-4">
+
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <h6>Empleados</h6>
+                    <h3>{{ total_empleados }}</h3>
+                </div>
+            </div>
+
+            {% if user.role in ['admin', 'supervisor'] %}
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <h6>Clientes</h6>
+                    <h3>{{ total_clientes }}</h3>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <h6>Documentos</h6>
+                    <h3>{{ total_documentos }}</h3>
+                </div>
+            </div>
+
+            {% if user.role in ['admin', 'supervisor'] %}
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <h6>Novedades</h6>
+                    <h3>{{ total_novedades }}</h3>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+
+        {% if user.role in ['admin', 'rrhh'] %}
+        <div class="row g-3 mb-4">
+
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <h6>Facturas Pendientes</h6>
+                    <h3>{{ facturas_pendientes }}</h3>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <h6>Total por Cobrar</h6>
+                    <h4>$ {{ "%.2f"|format(total_cobrar) }}</h4>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <h6>Total Vencido</h6>
+                    <h4>$ {{ "%.2f"|format(total_vencido) }}</h4>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <h6>Roles de Pago</h6>
+                    <h3>{{ total_nomina }}</h3>
+                </div>
+            </div>
+
+        </div>
+        {% endif %}
+
+        <hr>
+
+        <h5 class="section-title mb-3">Accesos rápidos</h5>
+
+        <div class="row g-3">
+
+            <div class="col-md-3">
+                <a href="{{ url_for('search.global_search') }}" class="quick-card">
+                    Buscador
+                </a>
+            </div>
+
+            {% if user.role in ['admin', 'rrhh', 'supervisor'] %}
+            <div class="col-md-3">
+                <a href="{{ url_for('employees.list_employees') }}" class="quick-card">
+                    Empleados
+                </a>
+            </div>
+
+            <div class="col-md-3">
+                <a href="{{ url_for('attendance.list_attendance') }}" class="quick-card">
+                    Asistencia
+                </a>
+            </div>
+            {% endif %}
+
+            {% if user.role in ['admin', 'supervisor'] %}
+            <div class="col-md-3">
+                <a href="{{ url_for('clients.list_clients') }}" class="quick-card">
+                    Clientes
+                </a>
+            </div>
+
+            <div class="col-md-3">
+                <a href="{{ url_for('contracts.list_contracts') }}" class="quick-card">
+                    Contratos
+                </a>
+            </div>
+            {% endif %}
+
+            {% if user.role in ['admin', 'rrhh'] %}
+            <div class="col-md-3">
+                <a href="{{ url_for('payroll.list_payroll') }}" class="quick-card">
+                    Nómina
+                </a>
+            </div>
+
+            <div class="col-md-3">
+                <a href="{{ url_for('invoices.list_invoices') }}" class="quick-card">
+                    Facturas
+                </a>
+            </div>
+            {% endif %}
+
+            {% if user.role in ['admin', 'rrhh', 'supervisor'] %}
+            <div class="col-md-3">
+                <a href="{{ url_for('documents.list_documents') }}" class="quick-card">
+                    Documentos
+                </a>
+            </div>
+            {% endif %}
+
+            {% if user.role == 'admin' %}
+            <div class="col-md-3">
+                <a href="{{ url_for('backup.download_backup') }}" class="quick-card">
+                    Respaldar Sistema
+                </a>
+            </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

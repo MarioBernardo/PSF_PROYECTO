@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ titulo }}</h2>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3">
+        {{ form.nombre.label }}
+        {{ form.nombre(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.ubicacion.label }}
+        {{ form.ubicacion(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.descripcion.label }}
+        {{ form.descripcion(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.estado.label }}
+        {{ form.estado(class="form-select") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.contract_id.label }}
+        {{ form.contract_id(class="form-select") }}
+    </div>
+
+    {{ form.submit(class="btn btn-success") }}
+    <a href="{{ url_for('posts.list_posts') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ titulo }}</h2>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <div class="mb-2">
+        {{ form.nombres.label }}
+        {{ form.nombres(class="form-control") }}
+    </div>
+
+    <div class="mb-2">
+        {{ form.apellidos.label }}
+        {{ form.apellidos(class="form-control") }}
+    </div>
+
+    <div class="mb-2">
+        {{ form.cedula.label }}
+        {{ form.cedula(class="form-control") }}
+    </div>
+
+    <div class="mb-2">
+        {{ form.fecha_ingreso.label }}
+        {{ form.fecha_ingreso(class="form-control") }}
+    </div>
+
+    <div class="mb-2">
+        {{ form.tipo_puesto.label }}
+        {{ form.tipo_puesto(class="form-select") }}
+    </div>
+
+    <div class="mb-2">
+        {{ form.cargo.label }}
+        {{ form.cargo(class="form-select") }}
+    </div>
+
+    <div class="mb-2">
+        {{ form.salario.label }}
+        {{ form.salario(class="form-control") }}
+    </div>
+
+    {{ form.submit(class="btn btn-success") }}
+    <a href="{{ url_for('employees.list_employees') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

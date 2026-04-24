@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Turnos</h2>
+
+<a href="{{ url_for('shifts.create_shift') }}" class="btn btn-primary mb-3">
+    Nuevo Turno
+</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Empleado</th>
+            <th>Puesto</th>
+            <th>Fecha</th>
+            <th>Tipo Turno</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for t in turnos %}
+        <tr>
+            <td>{{ t.id }}</td>
+            <td>{{ t.employee.nombres }} {{ t.employee.apellidos }}</td>
+            <td>{{ t.post.nombre }}</td>
+            <td>{{ t.fecha }}</td>
+            <td>{{ t.tipo_turno }}</td>
+            <td>{{ t.estado }}</td>
+            <td>
+                <a href="{{ url_for('shifts.edit_shift', id=t.id) }}" class="btn btn-warning btn-sm">
+                    Editar
+                </a>
+
+                <form action="{{ url_for('shifts.delete_shift', id=t.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm"
+                        onclick="return confirm('¿Seguro que deseas eliminar este turno?')">
+                        Eliminar
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Contratos</h2>
+
+<a href="{{ url_for('contracts.create_contract') }}" class="btn btn-primary mb-3">
+    Nuevo Contrato
+</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Servicio</th>
+            <th>Inicio</th>
+            <th>Fin</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in contratos %}
+        <tr>
+            <td>{{ c.id }}</td>
+            <td>{{ c.cliente.nombre }}</td>
+            <td>{{ c.tipo_servicio }}</td>
+            <td>{{ c.fecha_inicio }}</td>
+            <td>{{ c.fecha_fin }}</td>
+            <td>{{ c.estado }}</td>
+            <td>
+                <a href="{{ url_for('contracts.edit_contract', id=c.id) }}" class="btn btn-warning btn-sm">
+                    Editar
+                </a>
+
+                <form action="{{ url_for('contracts.delete_contract', id=c.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm"
+                        onclick="return confirm('¿Seguro que deseas eliminar este contrato?')">
+                        Eliminar
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

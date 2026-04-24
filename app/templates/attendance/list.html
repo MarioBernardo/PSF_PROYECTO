@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Asistencia</h2>
+
+<a href="{{ url_for('attendance.create_attendance') }}" class="btn btn-primary mb-3">
+    Nueva Asistencia
+</a>
+
+<table class="table table-bordered table-sm">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Empleado</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Observación</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for a in asistencias %}
+        <tr>
+            <td>{{ a.id }}</td>
+
+            <td>
+                {% if a.employee %}
+                    {{ a.employee.apellidos }} {{ a.employee.nombres }}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+
+            <td>{{ a.fecha }}</td>
+            <td>{{ a.estado }}</td>
+            <td>{{ a.observacion }}</td>
+
+            <td>
+                <a href="{{ url_for('attendance.edit_attendance', id=a.id) }}" class="btn btn-warning btn-sm">
+                    Editar
+                </a>
+
+                {% if current_user.role == 'admin' %}
+                <form method="POST"
+                      action="{{ url_for('attendance.delete_attendance', id=a.id) }}"
+                      style="display:inline;">
+
+                    <button type="submit" class="btn btn-danger btn-sm"
+                            onclick="return confirm('¿Seguro que deseas eliminar esta asistencia?')">
+                        Eliminar
+                    </button>
+                </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

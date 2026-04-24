@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ titulo }}</h2>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3">
+        {{ form.employee_id.label }}
+        {{ form.employee_id(class="form-select") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.post_id.label }}
+        {{ form.post_id(class="form-select") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.fecha.label }}
+        {{ form.fecha(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.tipo_turno.label }}
+        {{ form.tipo_turno(class="form-select") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.estado.label }}
+        {{ form.estado(class="form-select") }}
+    </div>
+
+    {{ form.submit(class="btn btn-success") }}
+    <a href="{{ url_for('shifts.list_shifts') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

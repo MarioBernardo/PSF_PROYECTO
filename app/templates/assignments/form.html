@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ titulo }}</h2>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3">
+        {{ form.contract_id.label }}
+        {{ form.contract_id(class="form-select") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.employee_id.label }}
+        {{ form.employee_id(class="form-select") }}
+    </div>
+
+    {{ form.submit(class="btn btn-success") }}
+    <a href="{{ url_for('assignments.list_assignments') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

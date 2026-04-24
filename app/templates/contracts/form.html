@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ titulo }}</h2>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3">
+        {{ form.cliente_id.label }}
+        {{ form.cliente_id(class="form-select") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.tipo_servicio.label }}
+        {{ form.tipo_servicio(class="form-select") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.fecha_inicio.label }}
+        {{ form.fecha_inicio(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.fecha_fin.label }}
+        {{ form.fecha_fin(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.estado.label }}
+        {{ form.estado(class="form-select") }}
+    </div>
+
+    {{ form.submit(class="btn btn-success") }}
+    <a href="{{ url_for('contracts.list_contracts') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

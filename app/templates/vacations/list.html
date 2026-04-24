@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Vacaciones</h2>
+
+<a href="{{ url_for('vacations.create_vacation') }}" class="btn btn-primary mb-3">
+    Nueva Vacación
+</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Empleado</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Días</th>
+            <th>Observación</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for v in vacaciones %}
+        <tr>
+            <td>{{ v.id }}</td>
+            <td>{{ v.employee.nombres }} {{ v.employee.apellidos }}</td>
+            <td>{{ v.fecha_inicio }}</td>
+            <td>{{ v.fecha_fin }}</td>
+            <td>{{ v.dias }}</td>
+            <td>{{ v.observacion }}</td>
+            <td>{{ v.estado }}</td>
+            <td>
+                <a href="{{ url_for('vacations.edit_vacation', id=v.id) }}" class="btn btn-warning btn-sm">
+                    Editar
+                </a>
+
+                <form action="{{ url_for('vacations.delete_vacation', id=v.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm"
+                        onclick="return confirm('¿Seguro que deseas eliminar esta vacación?')">
+                        Eliminar
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

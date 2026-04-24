@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ titulo }}</h2>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3">
+        {{ form.nombre.label }}
+        {{ form.nombre(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.categoria.label }}
+        {{ form.categoria(class="form-select") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.codigo.label }}
+        {{ form.codigo(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.cantidad.label }}
+        {{ form.cantidad(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.estado.label }}
+        {{ form.estado(class="form-select") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.observacion.label }}
+        {{ form.observacion(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.post_id.label }}
+        {{ form.post_id(class="form-select") }}
+    </div>
+
+    {{ form.submit(class="btn btn-success") }}
+    <a href="{{ url_for('inventory.list_inventory') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

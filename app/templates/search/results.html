@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Buscador Global</h2>
+
+<form method="GET">
+<div class="input-group mb-4">
+
+<input type="text"
+name="q"
+value="{{ q }}"
+class="form-control"
+placeholder="Buscar empleado, cliente, factura, documento...">
+
+<button class="btn btn-primary">
+Buscar
+</button>
+
+</div>
+</form>
+
+{% if q %}
+
+<h5 class="mb-3">Resultados para: "{{ q }}"</h5>
+
+<hr>
+
+<h4>Empleados</h4>
+
+<table class="table table-bordered table-sm mb-4">
+<tr>
+<th>ID</th>
+<th>Nombre</th>
+<th>Cédula</th>
+</tr>
+
+{% for e in empleados %}
+<tr>
+<td>{{ e.id }}</td>
+<td>{{ e.nombres }} {{ e.apellidos }}</td>
+<td>{{ e.cedula }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<h4>Clientes</h4>
+
+<table class="table table-bordered table-sm mb-4">
+<tr>
+<th>ID</th>
+<th>Cliente</th>
+<th>RUC / CI</th>
+</tr>
+
+{% for c in clientes %}
+<tr>
+<td>{{ c.id }}</td>
+<td>{{ c.nombre }}</td>
+<td>{{ c.ruc_ci }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<h4>Facturas</h4>
+
+<table class="table table-bordered table-sm mb-4">
+<tr>
+<th>ID</th>
+<th>Número</th>
+<th>Cliente</th>
+<th>Total</th>
+</tr>
+
+{% for f in facturas %}
+<tr>
+<td>{{ f.id }}</td>
+<td>{{ f.numero }}</td>
+<td>{{ f.client.nombre if f.client else '-' }}</td>
+<td>$ {{ "%.2f"|format(f.total) }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<h4>Documentos</h4>
+
+<table class="table table-bordered table-sm">
+<tr>
+<th>ID</th>
+<th>Tipo</th>
+<th>Título</th>
+<th>Archivo</th>
+</tr>
+
+{% for d in documentos %}
+<tr>
+<td>{{ d.id }}</td>
+<td>{{ d.tipo }}</td>
+<td>{{ d.titulo }}</td>
+<td>{{ d.archivo }}</td>
+</tr>
+{% endfor %}
+</table>
+
+{% endif %}
+
+{% endblock %}

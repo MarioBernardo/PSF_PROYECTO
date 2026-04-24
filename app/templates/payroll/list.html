@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Roles de Pago</h2>
+
+<a href="{{ url_for('payroll.create_payroll') }}" class="btn btn-primary mb-3">
+    Nuevo Rol de Pago
+</a>
+
+<table class="table table-bordered table-sm">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>No. Rol</th>
+            <th>Empleado</th>
+            <th>Tipo Pago</th>
+            <th>Mes</th>
+            <th>Año</th>
+            <th>Total Ingresos</th>
+            <th>Total Descuentos</th>
+            <th>Neto a Pagar</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for r in roles %}
+        <tr>
+            <td>{{ r.id }}</td>
+            <td>PSF-{{ r.numero_rol }}</td>
+            <td>{{ r.employee.nombres }} {{ r.employee.apellidos }}</td>
+            <td>{{ r.tipo_pago }}</td>
+            <td>{{ r.mes }}</td>
+            <td>{{ r.anio }}</td>
+            <td>$ {{ "%.2f"|format(r.total_ingresos) }}</td>
+            <td>$ {{ "%.2f"|format(r.total_descuentos) }}</td>
+            <td><strong>$ {{ "%.2f"|format(r.neto_pagar) }}</strong></td>
+
+            <td>
+                <a href="{{ url_for('payroll.edit_payroll', id=r.id) }}" class="btn btn-warning btn-sm">
+                    Editar
+                </a>
+
+                <a href="{{ url_for('payroll.payroll_pdf', id=r.id) }}" class="btn btn-dark btn-sm">
+                    PDF
+                </a>
+
+                {% if current_user.role == 'admin' %}
+                <form action="{{ url_for('payroll.delete_payroll', id=r.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm"
+                        onclick="return confirm('¿Seguro que deseas eliminar este rol de pago?')">
+                        Eliminar
+                    </button>
+                </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

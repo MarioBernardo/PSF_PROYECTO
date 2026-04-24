@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ titulo }}</h2>
+
+<form method="POST" enctype="multipart/form-data">
+
+{{ form.hidden_tag() }}
+
+<div class="mb-2">
+{{ form.numero.label }}
+{{ form.numero(class="form-control") }}
+</div>
+
+<div class="mb-2">
+{{ form.tipo.label }}
+{{ form.tipo(class="form-select") }}
+</div>
+
+<div class="mb-2">
+{{ form.estado.label }}
+{{ form.estado(class="form-select") }}
+</div>
+
+<div class="mb-2">
+{{ form.titulo.label }}
+{{ form.titulo(class="form-control") }}
+</div>
+
+<div class="mb-2">
+{{ form.employee_id.label }}
+{{ form.employee_id(class="form-select") }}
+</div>
+
+<div class="mb-2">
+{{ form.client_id.label }}
+{{ form.client_id(class="form-select") }}
+</div>
+
+<div class="mb-2">
+{{ form.fecha.label }}
+{{ form.fecha(class="form-control") }}
+</div>
+
+<div class="mb-2">
+{{ form.archivo.label }}
+{{ form.archivo(class="form-control") }}
+</div>
+
+<div class="mb-2">
+{{ form.observacion.label }}
+{{ form.observacion(class="form-control") }}
+</div>
+
+{{ form.submit(class="btn btn-success") }}
+
+</form>
+{% endblock %}

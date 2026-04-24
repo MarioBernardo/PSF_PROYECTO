@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Facturas / Recibos / Cuentas por Cobrar</h2>
+
+<div class="row mb-3">
+    <div class="col-md-4">
+        <div class="card border-warning">
+            <div class="card-body">
+                <h6>Total por cobrar</h6>
+                <h4>$ {{ "%.2f"|format(total_cobrar) }}</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card border-danger">
+            <div class="card-body">
+                <h6>Total vencido</h6>
+                <h4>$ {{ "%.2f"|format(total_vencido) }}</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card border-success">
+            <div class="card-body">
+                <h6>Total pagado</h6>
+                <h4>$ {{ "%.2f"|format(total_pagado) }}</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="{{ url_for('invoices.create_invoice') }}" class="btn btn-primary mb-3">
+    Nuevo Comprobante
+</a>
+
+<table class="table table-bordered table-sm">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tipo</th>
+            <th>Número</th>
+            <th>Cliente</th>
+            <th>Mes</th>
+            <th>Emisión</th>
+            <th>Vence</th>
+            <th>Subtotal</th>
+            <th>IVA</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Días vencidos</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for f in facturas %}
+
+        {% if f.estado == 'Pagada' %}
+            {% set clase = 'table-success' %}
+        {% elif f.estado == 'Vencida' %}
+            {% set clase = 'table-danger' %}
+        {% elif f.estado == 'Anulada' %}
+            {% set clase = 'table-secondary' %}
+        {% else %}
+            {% set clase = 'table-warning' %}
+        {% endif %}
+
+        <tr class="{{ clase }}">
+            <td>{{ f.id }}</td>
+            <td>{{ f.tipo_comprobante }}</td>
+            <td>{{ f.numero }}</td>
+            <td>{{ f.client.nombre if f.client else '-' }}</td>
+            <td>{{ f.mes }}</td>
+            <td>{{ f.fecha }}</td>
+            <td>{{ f.fecha_vencimiento }}</td>
+            <td>$ {{ "%.2f"|format(f.subtotal) }}</td>
+            <td>$ {{ "%.2f"|format(f.iva) }}</td>
+            <td><strong>$ {{ "%.2f"|format(f.total) }}</strong></td>
+            <td>{{ f.estado }}</td>
+            <td>{{ dias_vencidos(f) }}</td>
+
+            <td>
+                <a href="{{ url_for('invoices.edit_invoice', id=f.id) }}" class="btn btn-warning btn-sm">
+                    Editar
+                </a>
+
+                {% if f.estado != 'Pagada' and f.estado != 'Anulada' %}
+                <form action="{{ url_for('invoices.mark_paid', id=f.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-success btn-sm"
+                        onclick="return confirm('¿Marcar este comprobante como pagado?')">
+                        Pagada
+                    </button>
+                </form>
+                {% endif %}
+
+                {% if current_user.role == 'admin' %}
+                <form action="{{ url_for('invoices.delete_invoice', id=f.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm"
+                        onclick="return confirm('¿Seguro que deseas eliminar este comprobante?')">
+                        Eliminar
+                    </button>
+                </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

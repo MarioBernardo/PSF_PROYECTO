@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>{{ titulo }}</h2>
+
+<form method="POST">
+
+{{ form.hidden_tag() }}
+
+<div class="mb-3">
+{{ form.employee_id.label }}
+{{ form.employee_id(class="form-select") }}
+</div>
+
+<div class="mb-3">
+{{ form.fecha.label }}
+{{ form.fecha(class="form-control") }}
+</div>
+
+<div class="mb-3">
+{{ form.estado.label }}
+{{ form.estado(class="form-select") }}
+</div>
+
+<div class="mb-3">
+{{ form.observacion.label }}
+{{ form.observacion(class="form-control") }}
+</div>
+
+{{ form.submit(class="btn btn-success") }}
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Puestos</h2>
+
+<a href="{{ url_for('posts.create_post') }}" class="btn btn-primary mb-3">
+    Nuevo Puesto
+</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Puesto</th>
+            <th>Ubicación</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Contrato</th>
+            <th>Cliente</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in puestos %}
+        <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.nombre }}</td>
+            <td>{{ p.ubicacion }}</td>
+            <td>{{ p.descripcion }}</td>
+            <td>{{ p.estado }}</td>
+            <td>{{ p.contract.tipo_servicio }}</td>
+            <td>{{ p.contract.cliente.nombre }}</td>
+            <td>
+                <a href="{{ url_for('posts.edit_post', id=p.id) }}" class="btn btn-warning btn-sm">
+                    Editar
+                </a>
+
+                <form action="{{ url_for('posts.delete_post', id=p.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm"
+                        onclick="return confirm('¿Seguro que deseas eliminar este puesto?')">
+                        Eliminar
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

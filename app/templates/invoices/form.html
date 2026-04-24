@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ titulo }}</h2>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            {{ form.client_id.label }}
+            {{ form.client_id(class="form-select") }}
+        </div>
+
+        <div class="col-md-6 mb-3">
+            {{ form.numero.label }}
+            {{ form.numero(class="form-control") }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            {{ form.tipo_comprobante.label }}
+            {{ form.tipo_comprobante(class="form-select") }}
+            <small class="text-muted">Factura calcula IVA. Recibo no calcula IVA.</small>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            {{ form.mes.label }}
+            {{ form.mes(class="form-control", placeholder="Ejemplo: Abril 2026") }}
+        </div>
+
+        <div class="col-md-4 mb-3">
+            {{ form.fecha.label }}
+            {{ form.fecha(class="form-control") }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            {{ form.fecha_vencimiento.label }}
+            {{ form.fecha_vencimiento(class="form-control") }}
+        </div>
+
+        <div class="col-md-4 mb-3">
+            {{ form.subtotal.label }}
+            {{ form.subtotal(class="form-control") }}
+        </div>
+
+        <div class="col-md-4 mb-3">
+            {{ form.estado.label }}
+            {{ form.estado(class="form-select") }}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        {{ form.observacion.label }}
+        {{ form.observacion(class="form-control", rows="3") }}
+    </div>
+
+    {{ form.submit(class="btn btn-success") }}
+
+    <a href="{{ url_for('invoices.list_invoices') }}" class="btn btn-secondary">
+        Cancelar
+    </a>
+</form>
+{% endblock %}

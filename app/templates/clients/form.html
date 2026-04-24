@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ titulo }}</h2>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3">
+        {{ form.nombre.label }}
+        {{ form.nombre(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.ruc_ci.label }}
+        {{ form.ruc_ci(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.direccion.label }}
+        {{ form.direccion(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.telefono.label }}
+        {{ form.telefono(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.correo.label }}
+        {{ form.correo(class="form-control") }}
+    </div>
+
+    {{ form.submit(class="btn btn-success") }}
+    <a href="{{ url_for('clients.list_clients') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

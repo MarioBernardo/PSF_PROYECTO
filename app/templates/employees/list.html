@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Empleados</h2>
+
+<a href="{{ url_for('employees.create_employee') }}" class="btn btn-primary mb-3">
+    Nuevo Empleado
+</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>Cédula</th>
+            <th>Tipo Puesto</th>
+            <th>Cargo</th>
+            <th>Salario</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for e in empleados %}
+        <tr>
+            <td>{{ e.id }}</td>
+            <td>{{ e.nombres }}</td>
+            <td>{{ e.apellidos }}</td>
+            <td>{{ e.cedula }}</td>
+            <td>{{ e.tipo_puesto }}</td>
+            <td>{{ e.cargo }}</td>
+            <td>{{ e.salario }}</td>
+            <td>
+                <a href="{{ url_for('employees.edit_employee', id=e.id) }}" class="btn btn-warning btn-sm">
+                    Editar
+                </a>
+
+                <form action="{{ url_for('employees.delete_employee', id=e.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm"
+                        onclick="return confirm('¿Seguro que deseas eliminar este empleado?')">
+                        Eliminar
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

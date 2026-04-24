@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar sesión - Pacific Security Force</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+
+<body class="login-body">
+
+<div class="login-wrapper">
+
+    <div class="login-info">
+        <h1>Pacific Security Force</h1>
+        <p>
+            Pacific Security Force, líderes en seguridad privada,
+            custodia profesional y soluciones confiables las 24 horas.
+        </p>
+
+        <div class="login-badge text-center w-100">
+            Protección • Vigilancia • Confianza
+        </div>
+    </div>
+
+    <div class="login-card">
+
+        <div class="login-logo">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+            <h4>Iniciar sesión</h4>
+            <p class="text-muted mb-0">Ingrese sus credenciales</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} py-2">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            {{ form.hidden_tag() }}
+
+            <div class="mb-3">
+                {{ form.username.label(class="form-label") }}
+                {{ form.username(class="form-control", placeholder="Usuario") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control", placeholder="Contraseña") }}
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+                Ingresar al sistema
+            </button>
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

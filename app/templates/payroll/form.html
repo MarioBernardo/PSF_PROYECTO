@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ titulo }}</h2>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            {{ form.employee_id.label }}
+            {{ form.employee_id(class="form-select") }}
+        </div>
+
+        <div class="col-md-4 mb-3">
+            {{ form.mes.label }}
+            {{ form.mes(class="form-select") }}
+        </div>
+
+        <div class="col-md-4 mb-3">
+            {{ form.anio.label }}
+            {{ form.anio(class="form-control") }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            {{ form.tipo_pago.label }}
+            {{ form.tipo_pago(class="form-select") }}
+        </div>
+
+        <div class="col-md-4 mb-3">
+            {{ form.base_iess.label }}
+            {{ form.base_iess(class="form-select") }}
+            <small class="text-muted">
+                Si es sacafrancos no aplica.
+            </small>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            {{ form.sueldo_basico.label }}
+            {{ form.sueldo_basico(class="form-control") }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            {{ form.horas_extras.label }}
+            {{ form.horas_extras(class="form-control") }}
+        </div>
+
+        <div class="col-md-4 mb-3">
+            {{ form.turnos_realizados.label }}
+            {{ form.turnos_realizados(class="form-control") }}
+        </div>
+
+        <div class="col-md-4 mb-3">
+            {{ form.valor_turno.label }}
+            {{ form.valor_turno(class="form-control") }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            {{ form.otros_ingresos.label }}
+            {{ form.otros_ingresos(class="form-control") }}
+        </div>
+
+        <div class="col-md-4 mb-3">
+            {{ form.prestamo_quirografario.label }}
+            {{ form.prestamo_quirografario(class="form-control") }}
+        </div>
+
+        <div class="col-md-4 mb-3">
+            {{ form.anticipo_empresa.label }}
+            {{ form.anticipo_empresa(class="form-control") }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            {{ form.multas.label }}
+            {{ form.multas(class="form-control") }}
+        </div>
+
+        <div class="col-md-4 mb-3">
+            {{ form.otros_descuentos.label }}
+            {{ form.otros_descuentos(class="form-control") }}
+        </div>
+    </div>
+
+    {{ form.submit(class="btn btn-success") }}
+
+    <a href="{{ url_for('payroll.list_payroll') }}"
+       class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>
+{% endblock %}
