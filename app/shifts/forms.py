@@ -13,6 +13,7 @@ class ShiftForm(FlaskForm):
         "Tipo de Turno",
         choices=[
             ("12 horas", "12 horas"),
+            ("Mixto", "Mixto"),
             ("24 horas", "24 horas")
         ],
         validators=[DataRequired()]

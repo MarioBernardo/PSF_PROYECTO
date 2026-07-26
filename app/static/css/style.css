@@ -1,8 +1,7 @@
 :root {
-    --azul-principal: #082744;
-    --azul-secundario: #0d4f83;
-    --azul-brillante: #1e88e5;
-    --celeste-suave: #eef7ff;
+    --azul-oscuro: #082744;
+    --azul-medio: #0d4f83;
+    --azul-claro: #eef7ff;
     --gris-fondo: #f3f6fa;
     --gris-borde: #d8dee6;
     --texto: #17202a;
@@ -14,50 +13,18 @@ body {
     color: var(--texto);
 }
 
-/* NAVBAR */
-.navbar-custom {
-    background: linear-gradient(90deg, var(--azul-principal), var(--azul-secundario));
-    padding: 12px 18px;
-}
-
-.navbar-brand {
-    font-weight: bold;
-    font-size: 21px;
-}
-
-.main-container {
-    max-width: 1250px;
-}
-
-/* BOTONES */
-.btn {
-    border-radius: 9px;
-}
-
-.btn-outline-corporativo {
-    border: 1px solid white;
-    color: white;
-}
-
-.btn-outline-corporativo:hover {
-    background: white;
-    color: var(--azul-principal);
-}
-
 /* LOGIN */
 .login-body {
     min-height: 100vh;
-    background:
-        linear-gradient(135deg, rgba(8, 39, 68, 0.95), rgba(30, 136, 229, 0.85)),
-        radial-gradient(circle at top left, #35a7ff, transparent 35%);
+    background: linear-gradient(135deg, #082744, #1e88e5);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .login-wrapper {
-    width: 900px;
-    min-height: 500px;
+    width: 920px;
+    min-height: 520px;
     background: white;
     border-radius: 28px;
     overflow: hidden;
@@ -67,7 +34,7 @@ body {
 }
 
 .login-info {
-    background: linear-gradient(160deg, var(--azul-principal), var(--azul-secundario));
+    background: linear-gradient(160deg, var(--azul-oscuro), var(--azul-medio));
     color: white;
     padding: 45px;
     display: flex;
@@ -76,14 +43,7 @@ body {
 }
 
 .login-info h1 {
-    font-size: 32px;
     font-weight: bold;
-    margin-bottom: 15px;
-}
-
-.login-info p {
-    font-size: 16px;
-    opacity: 0.95;
 }
 
 .login-badge {
@@ -114,56 +74,117 @@ body {
     margin-bottom: 12px;
 }
 
-.login-logo h4 {
-    font-weight: bold;
-    color: var(--azul-principal);
+/* LAYOUT */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
 }
 
-.login-card .form-control {
+.sidebar {
+    width: 270px;
+    background: linear-gradient(180deg, var(--azul-oscuro), var(--azul-medio));
+    color: white;
+    padding: 22px 18px;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.sidebar-logo {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar-logo img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    margin-bottom: 8px;
+}
+
+.sidebar-logo h5 {
+    font-weight: bold;
+    margin: 0;
+}
+
+.sidebar-section {
+    margin-top: 18px;
+    font-size: 12px;
+    text-transform: uppercase;
+    opacity: 0.75;
+    font-weight: bold;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 9px 12px;
     border-radius: 10px;
-    padding: 11px;
+    margin-top: 5px;
+    font-size: 14px;
 }
 
-.login-card .btn-primary {
-    background: var(--azul-secundario);
-    border: none;
-    padding: 11px;
+.sidebar a:hover {
+    background: rgba(255,255,255,0.16);
+}
+
+.main-content {
+    margin-left: 270px;
+    width: calc(100% - 270px);
+}
+
+.topbar {
+    height: 64px;
+    background: white;
+    border-bottom: 1px solid var(--gris-borde);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 26px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.topbar-title {
     font-weight: bold;
+    color: var(--azul-oscuro);
 }
 
-.login-card .btn-primary:hover {
-    background: var(--azul-principal);
+.content-wrapper {
+    padding: 26px;
 }
 
-/* DASHBOARD */
+/* CARDS */
+.card {
+    border-radius: 16px;
+    border: 1px solid var(--gris-borde);
+}
+
 .dashboard-panel {
-    border-radius: 22px;
+    border-radius: 20px;
     border: none;
     overflow: hidden;
 }
 
 .dashboard-top {
-    background: linear-gradient(90deg, white, var(--celeste-suave));
+    background: linear-gradient(90deg, white, var(--azul-claro));
     padding: 28px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.dashboard-title h2 {
-    margin: 0;
-    font-weight: bold;
-    color: var(--azul-principal);
-}
-
-.dashboard-title p {
-    margin: 4px 0;
-}
-
 .dashboard-logo-right {
-    width: 145px;
-    height: 145px;
+    width: 150px;
+    height: 150px;
     object-fit: contain;
+}
+
+.section-title {
+    font-weight: bold;
+    color: var(--azul-oscuro);
 }
 
 .alerta-corporativa {
@@ -186,37 +207,59 @@ body {
 
 .metric-card h6 {
     font-weight: bold;
-    color: var(--azul-principal);
-    margin-bottom: 10px;
+    color: var(--azul-oscuro);
 }
 
 .metric-card h3,
 .metric-card h4 {
     font-weight: bold;
-    margin: 0;
 }
 
 .quick-card {
     display: block;
     text-decoration: none;
     background: white;
-    color: var(--azul-principal);
+    color: var(--azul-oscuro);
     border: 1px solid var(--gris-borde);
     border-radius: 16px;
     padding: 20px;
     text-align: center;
     font-weight: bold;
     transition: 0.2s;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
 }
 
 .quick-card:hover {
-    background: var(--azul-principal);
+    background: var(--azul-oscuro);
     color: white;
     transform: translateY(-3px);
 }
 
-.section-title {
-    font-weight: bold;
-    color: var(--azul-principal);
+.btn {
+    border-radius: 9px;
+}
+
+@media (max-width: 900px) {
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+
+    .app-layout {
+        display: block;
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .login-wrapper {
+        width: 95%;
+        grid-template-columns: 1fr;
+    }
+
+    .login-info {
+        display: none;
+    }
 }

@@ -333,8 +333,12 @@ def payroll_pdf(id):
     buffer.seek(0)
 
     return send_file(
-        buffer,
-        as_attachment=True,
-        download_name=f"rol_pago_PSF_{rol.numero_rol}.pdf",
-        mimetype="application/pdf"
-    )
+    buffer,
+    as_attachment=True,
+    download_name=(
+        f"{empleado.apellidos.upper()} "
+        f"{empleado.nombres.upper()} - "
+        f"{rol.mes.upper()} {rol.anio}.pdf"
+    ),
+    mimetype="application/pdf"
+)
