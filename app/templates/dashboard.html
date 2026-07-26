@@ -1,181 +1,171 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% set summary = dashboard_metrics %}
 
-<div class="card shadow-sm dashboard-panel">
-
-    <div class="dashboard-top">
-
+<div class="dashboard-shell">
+    <section class="dashboard-hero">
         <div>
-            <h2 class="section-title">Panel Principal</h2>
-            <p class="mb-1">Bienvenido, <strong>{{ user.username }}</strong></p>
-            <p class="mb-1">Rol: <strong>{{ user.role }}</strong></p>
-            <p class="text-muted mb-0">
-                Gestión administrativa y operativa de Pacific Security Force
-            </p>
+            <p class="eyebrow">Panel ejecutivo</p>
+            <h2>{{ summary.greeting }}, {{ user.username|title }}</h2>
+            <p>{{ summary.day_summary }}</p>
         </div>
-
-        <img src="{{ url_for('static', filename='img/logo.png') }}"
-             class="dashboard-logo-right"
-             alt="Logo">
-
-    </div>
-
-    <div class="card-body p-4">
-
-        <div class="alerta-corporativa mb-4">
-            <strong>Alertas:</strong>
-            Facturas vencidas: <strong>{{ facturas_vencidas }}</strong> |
-            Contratos por vencer: <strong>{{ contratos_vencer }}</strong> |
-            Documentos pendientes: <strong>{{ documentos_pendientes }}</strong>
+        <div class="hero-badge">
+            <span>Periodo actual</span>
+            <strong>{{ summary.period_label }}</strong>
         </div>
+    </section>
 
-        <h5 class="section-title mb-3">Resumen general</h5>
+    <section class="kpi-grid">
+        <article class="kpi-card kpi-card-main">
+            <div class="kpi-card-top">
+                <span class="kpi-label">Facturación del mes</span>
+                <span class="kpi-badge positive">+8.2%</span>
+            </div>
+            <h3>$ {{ summary.facturacion_mes|round(2) }}</h3>
+            <p>Ingresos del período actual</p>
+        </article>
 
-        <div class="row g-3 mb-4">
+        <article class="kpi-card">
+            <span class="kpi-label">Gasto en nómina</span>
+            <h4>$ {{ summary.gasto_nomina_mes|round(2) }}</h4>
+        </article>
 
-            <div class="col-md-3">
-                <div class="metric-card">
-                    <h6>Empleados</h6>
-                    <h3>{{ total_empleados }}</h3>
+        <article class="kpi-card">
+            <span class="kpi-label">Ganancia del mes</span>
+            <h4>$ {{ summary.ganancia_mes|round(2) }}</h4>
+        </article>
+
+        <article class="kpi-card">
+            <span class="kpi-label">Ganancia acumulada</span>
+            <h4>$ {{ summary.ganancia_acumulada|round(2) }}</h4>
+        </article>
+    </section>
+
+    <section class="secondary-grid">
+        <article class="metric-pill">
+            <span>Empleados activos</span>
+            <strong>{{ summary.empleados_activos }}</strong>
+        </article>
+        <article class="metric-pill">
+            <span>Clientes activos</span>
+            <strong>{{ summary.clientes_activos }}</strong>
+        </article>
+        <article class="metric-pill">
+            <span>Contratos activos</span>
+            <strong>{{ summary.contratos_activos }}</strong>
+        </article>
+        <article class="metric-pill">
+            <span>Facturas pendientes</span>
+            <strong>{{ summary.facturas_pendientes }}</strong>
+        </article>
+    </section>
+
+    <section class="dashboard-canvas">
+        <article class="panel-card panel-card-wide">
+            <div class="panel-card-header">
+                <div>
+                    <p class="panel-eyebrow">Principal</p>
+                    <h3>Facturación últimos meses</h3>
+                </div>
+                <span>Series mensuales</span>
+            </div>
+            <div class="chart-placeholder">
+                <div class="chart-bar large"></div>
+                <div class="chart-bar mid"></div>
+                <div class="chart-bar high"></div>
+                <div class="chart-bar small"></div>
+                <div class="chart-bar medium"></div>
+            </div>
+        </article>
+
+        <article class="panel-card panel-card-compact">
+            <div class="panel-card-header">
+                <div>
+                    <p class="panel-eyebrow">Secundario</p>
+                    <h3>Nómina</h3>
                 </div>
             </div>
+            <div class="mini-chart">
+                <div class="mini-chart-line"></div>
+                <div class="mini-chart-line alt"></div>
+            </div>
+        </article>
+    </section>
 
-            {% if user.role in ['admin', 'supervisor'] %}
-            <div class="col-md-3">
-                <div class="metric-card">
-                    <h6>Clientes</h6>
-                    <h3>{{ total_clientes }}</h3>
+    <section class="dashboard-bottom">
+        <article class="panel-card">
+            <div class="panel-card-header">
+                <div>
+                    <p class="panel-eyebrow">Acciones rápidas</p>
+                    <h3>Operaciones</h3>
                 </div>
             </div>
+            <div class="quick-actions">
+                <a href="{{ url_for('employees.list_employees') }}"><i class="fa-solid fa-users"></i> Empleados</a>
+                <a href="{{ url_for('clients.list_clients') }}"><i class="fa-solid fa-building-user"></i> Clientes</a>
+                <a href="{{ url_for('invoices.list_invoices') }}"><i class="fa-solid fa-file-invoice-dollar"></i> Facturación</a>
+                <a href="{{ url_for('payroll.list_payroll') }}"><i class="fa-solid fa-money-check-dollar"></i> Roles</a>
+            </div>
+        </article>
+
+        <article class="panel-card">
+            <div class="panel-card-header">
+                <div>
+                    <p class="panel-eyebrow">Próximos eventos</p>
+                    <h3>Agenda</h3>
+                </div>
+            </div>
+            <ul class="event-list">
+                {% for event in summary.upcoming_events %}
+                <li>
+                    <span>{{ event.date }}</span>
+                    <div>
+                        <strong>{{ event.title }}</strong>
+                        <p>{{ event.detail }}</p>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </article>
+
+        <article class="panel-card">
+            <div class="panel-card-header">
+                <div>
+                    <p class="panel-eyebrow">Actividad</p>
+                    <h3>Reciente</h3>
+                </div>
+            </div>
+            <ul class="panel-list compact">
+                {% for item in summary.actividad_reciente %}
+                <li>
+                    <strong>{{ item.title }}</strong>
+                    <span>{{ item.meta }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </article>
+
+        <article class="panel-card">
+            <div class="panel-card-header">
+                <div>
+                    <p class="panel-eyebrow">Alertas</p>
+                    <h3>Seguimiento</h3>
+                </div>
+            </div>
+            {% if summary.alertas %}
+            <ul class="panel-list compact">
+                {% for alerta in summary.alertas %}
+                <li>
+                    <strong>{{ alerta.title }}</strong>
+                    <span>{{ alerta.meta }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="empty-state">Sin alertas pendientes.</p>
             {% endif %}
-
-            <div class="col-md-3">
-                <div class="metric-card">
-                    <h6>Documentos</h6>
-                    <h3>{{ total_documentos }}</h3>
-                </div>
-            </div>
-
-            {% if user.role in ['admin', 'supervisor'] %}
-            <div class="col-md-3">
-                <div class="metric-card">
-                    <h6>Novedades</h6>
-                    <h3>{{ total_novedades }}</h3>
-                </div>
-            </div>
-            {% endif %}
-
-        </div>
-
-        {% if user.role in ['admin', 'rrhh'] %}
-        <div class="row g-3 mb-4">
-
-            <div class="col-md-3">
-                <div class="metric-card">
-                    <h6>Facturas Pendientes</h6>
-                    <h3>{{ facturas_pendientes }}</h3>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="metric-card">
-                    <h6>Total por Cobrar</h6>
-                    <h4>$ {{ "%.2f"|format(total_cobrar) }}</h4>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="metric-card">
-                    <h6>Total Vencido</h6>
-                    <h4>$ {{ "%.2f"|format(total_vencido) }}</h4>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="metric-card">
-                    <h6>Roles de Pago</h6>
-                    <h3>{{ total_nomina }}</h3>
-                </div>
-            </div>
-
-        </div>
-        {% endif %}
-
-        <hr>
-
-        <h5 class="section-title mb-3">Accesos rápidos</h5>
-
-        <div class="row g-3">
-
-            <div class="col-md-3">
-                <a href="{{ url_for('search.global_search') }}" class="quick-card">
-                    Buscador
-                </a>
-            </div>
-
-            {% if user.role in ['admin', 'rrhh', 'supervisor'] %}
-            <div class="col-md-3">
-                <a href="{{ url_for('employees.list_employees') }}" class="quick-card">
-                    Empleados
-                </a>
-            </div>
-
-            <div class="col-md-3">
-                <a href="{{ url_for('attendance.list_attendance') }}" class="quick-card">
-                    Asistencia
-                </a>
-            </div>
-            {% endif %}
-
-            {% if user.role in ['admin', 'supervisor'] %}
-            <div class="col-md-3">
-                <a href="{{ url_for('clients.list_clients') }}" class="quick-card">
-                    Clientes
-                </a>
-            </div>
-
-            <div class="col-md-3">
-                <a href="{{ url_for('contracts.list_contracts') }}" class="quick-card">
-                    Contratos
-                </a>
-            </div>
-            {% endif %}
-
-            {% if user.role in ['admin', 'rrhh'] %}
-            <div class="col-md-3">
-                <a href="{{ url_for('payroll.list_payroll') }}" class="quick-card">
-                    Nómina
-                </a>
-            </div>
-
-            <div class="col-md-3">
-                <a href="{{ url_for('invoices.list_invoices') }}" class="quick-card">
-                    Facturas
-                </a>
-            </div>
-            {% endif %}
-
-            {% if user.role in ['admin', 'rrhh', 'supervisor'] %}
-            <div class="col-md-3">
-                <a href="{{ url_for('documents.list_documents') }}" class="quick-card">
-                    Documentos
-                </a>
-            </div>
-            {% endif %}
-
-            {% if user.role == 'admin' %}
-            <div class="col-md-3">
-                <a href="{{ url_for('backup.download_backup') }}" class="quick-card">
-                    Respaldar Sistema
-                </a>
-            </div>
-            {% endif %}
-
-        </div>
-
-    </div>
-
+        </article>
+    </section>
 </div>
-
 {% endblock %}

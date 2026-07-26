@@ -6,104 +6,145 @@
     <title>Pacific Security Force</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 </head>
 
-<body>
+<body class="app-body" data-theme="light">
 
-<div class="app-layout">
+<div class="app-shell">
 
-    <aside class="sidebar">
-
-        <div class="sidebar-logo">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
             <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
-            <h5>Pacific Security Force</h5>
-            <small>{{ current_user.role }}</small>
+            <div>
+                <h5>Pacific Security Force</h5>
+                <p>{{ current_user.role|title }}</p>
+            </div>
         </div>
 
-        <div class="sidebar-section">Principal</div>
-        <a href="{{ url_for('main.index') }}">Inicio</a>
-        <a href="{{ url_for('search.global_search') }}">Buscar</a>
+        <button class="sidebar-toggle" type="button" id="sidebarToggle" aria-label="Contraer menú">
+            <i class="fa-solid fa-bars"></i>
+        </button>
 
-        {% if current_user.role == 'admin' %}
-        <div class="sidebar-section">Administración</div>
-        <a href="{{ url_for('users.list_users') }}">Usuarios</a>
-        {% endif %}
+        <nav class="sidebar-nav">
+            <a href="{{ url_for('main.index') }}" class="sidebar-link {% if request.endpoint == 'main.index' %}active{% endif %}">
+                <span class="nav-icon"><i class="fa-solid fa-house"></i></span>
+                <span class="nav-label">Inicio</span>
+            </a>
 
-        {% if current_user.role in ['admin', 'rrhh', 'supervisor'] %}
-        <div class="sidebar-section">Personal</div>
-        <a href="{{ url_for('employees.list_employees') }}">Empleados</a>
-        <a href="{{ url_for('attendance.list_attendance') }}">Asistencia</a>
-        {% endif %}
+            {% if current_user.role in ['admin', 'rrhh', 'supervisor'] %}
+            <div class="nav-group">
+                <button class="nav-section-toggle" type="button" data-target="menu-personal">
+                    <span class="nav-icon"><i class="fa-solid fa-users"></i></span>
+                    <span class="nav-label">Personal</span>
+                    <i class="fa-solid fa-chevron-right nav-caret"></i>
+                </button>
+                <div class="nav-submenu" id="menu-personal">
+                    <a href="{{ url_for('employees.list_employees') }}" class="sidebar-link {% if request.endpoint == 'employees.list_employees' %}active{% endif %}">Empleados</a>
+                    <a href="{{ url_for('attendance.list_attendance') }}" class="sidebar-link {% if request.endpoint == 'attendance.list_attendance' %}active{% endif %}">Asistencia</a>
+                    <a href="{{ url_for('shifts.list_shifts') }}" class="sidebar-link {% if request.endpoint == 'shifts.list_shifts' %}active{% endif %}">Turnos</a>
+                    <a href="{{ url_for('permissions.list_permissions') }}" class="sidebar-link {% if request.endpoint == 'permissions.list_permissions' %}active{% endif %}">Permisos</a>
+                    <a href="{{ url_for('vacations.list_vacations') }}" class="sidebar-link {% if request.endpoint == 'vacations.list_vacations' %}active{% endif %}">Vacaciones</a>
+                    <a href="{{ url_for('delays.list_delays') }}" class="sidebar-link {% if request.endpoint == 'delays.list_delays' %}active{% endif %}">Atrasos</a>
+                </div>
+            </div>
+            {% endif %}
 
-        {% if current_user.role in ['admin', 'rrhh'] %}
-        <a href="{{ url_for('permissions.list_permissions') }}">Permisos</a>
-        <a href="{{ url_for('vacations.list_vacations') }}">Vacaciones</a>
-        <a href="{{ url_for('delays.list_delays') }}">Atrasos</a>
-        <a href="{{ url_for('payroll.list_payroll') }}">Nómina</a>
-        {% endif %}
+            {% if current_user.role in ['admin', 'supervisor'] %}
+            <div class="nav-group">
+                <button class="nav-section-toggle" type="button" data-target="menu-operaciones">
+                    <span class="nav-icon"><i class="fa-solid fa-building"></i></span>
+                    <span class="nav-label">Operaciones</span>
+                    <i class="fa-solid fa-chevron-right nav-caret"></i>
+                </button>
+                <div class="nav-submenu" id="menu-operaciones">
+                    <a href="{{ url_for('clients.list_clients') }}" class="sidebar-link {% if request.endpoint == 'clients.list_clients' %}active{% endif %}">Clientes</a>
+                    <a href="{{ url_for('contracts.list_contracts') }}" class="sidebar-link {% if request.endpoint == 'contracts.list_contracts' %}active{% endif %}">Contratos</a>
+                    <a href="{{ url_for('posts.list_posts') }}" class="sidebar-link {% if request.endpoint == 'posts.list_posts' %}active{% endif %}">Puestos</a>
+                    <a href="{{ url_for('inventory.list_inventory') }}" class="sidebar-link {% if request.endpoint == 'inventory.list_inventory' %}active{% endif %}">Inventario</a>
+                    <a href="{{ url_for('incidents.list_incidents') }}" class="sidebar-link {% if request.endpoint == 'incidents.list_incidents' %}active{% endif %}">Novedades</a>
+                </div>
+            </div>
+            {% endif %}
 
-        {% if current_user.role in ['admin', 'supervisor'] %}
-        <div class="sidebar-section">Operaciones</div>
-        <a href="{{ url_for('clients.list_clients') }}">Clientes</a>
-        <a href="{{ url_for('contracts.list_contracts') }}">Contratos</a>
-        <a href="{{ url_for('assignments.list_assignments') }}">Asignaciones</a>
-        <a href="{{ url_for('posts.list_posts') }}">Puestos</a>
-        <a href="{{ url_for('shifts.list_shifts') }}">Turnos</a>
-        <a href="{{ url_for('incidents.list_incidents') }}">Novedades</a>
-        <a href="{{ url_for('inventory.list_inventory') }}">Inventario</a>
-        {% endif %}
+            {% if current_user.role in ['admin', 'rrhh'] %}
+            <div class="nav-group">
+                <button class="nav-section-toggle" type="button" data-target="menu-finanzas">
+                    <span class="nav-icon"><i class="fa-solid fa-wallet"></i></span>
+                    <span class="nav-label">Finanzas</span>
+                    <i class="fa-solid fa-chevron-right nav-caret"></i>
+                </button>
+                <div class="nav-submenu" id="menu-finanzas">
+                    <a href="{{ url_for('payroll.list_payroll') }}" class="sidebar-link {% if request.endpoint == 'payroll.list_payroll' %}active{% endif %}">Roles de Pago</a>
+                    <a href="{{ url_for('invoices.list_invoices') }}" class="sidebar-link {% if request.endpoint == 'invoices.list_invoices' %}active{% endif %}">Facturación</a>
+                </div>
+            </div>
+            {% endif %}
 
-        {% if current_user.role in ['admin', 'rrhh'] %}
-        <div class="sidebar-section">Finanzas</div>
-        <a href="{{ url_for('invoices.list_invoices') }}">Facturas / Recibos</a>
-        {% endif %}
+            {% if current_user.role in ['admin', 'rrhh', 'supervisor'] %}
+            <div class="nav-group">
+                <button class="nav-section-toggle" type="button" data-target="menu-reportes">
+                    <span class="nav-icon"><i class="fa-solid fa-chart-line"></i></span>
+                    <span class="nav-label">Reportes</span>
+                    <i class="fa-solid fa-chevron-right nav-caret"></i>
+                </button>
+                <div class="nav-submenu" id="menu-reportes">
+                    <a href="{{ url_for('reports.report_employees') }}" class="sidebar-link {% if request.endpoint == 'reports.report_employees' %}active{% endif %}">Reportes</a>
+                </div>
+            </div>
+            {% endif %}
 
-        {% if current_user.role in ['admin', 'rrhh', 'supervisor'] %}
-        <div class="sidebar-section">Archivo</div>
-        <a href="{{ url_for('documents.list_documents') }}">Documentos</a>
-        {% endif %}
+            {% if current_user.role == 'admin' %}
+            <div class="nav-group">
+                <button class="nav-section-toggle" type="button" data-target="menu-configuracion">
+                    <span class="nav-icon"><i class="fa-solid fa-gear"></i></span>
+                    <span class="nav-label">Configuración</span>
+                    <i class="fa-solid fa-chevron-right nav-caret"></i>
+                </button>
+                <div class="nav-submenu" id="menu-configuracion">
+                    <a href="{{ url_for('users.list_users') }}" class="sidebar-link {% if request.endpoint == 'users.list_users' %}active{% endif %}">Usuarios</a>
+                    <a href="{{ url_for('backup.download_backup') }}" class="sidebar-link {% if request.endpoint == 'backup.download_backup' %}active{% endif %}">Backup</a>
+                </div>
+            </div>
+            {% endif %}
 
-        {% if current_user.role in ['admin', 'rrhh', 'supervisor'] %}
-        <div class="sidebar-section">Reportes PDF</div>
-        <a href="{{ url_for('reports.report_employees') }}">Reporte Empleados</a>
-        <a href="{{ url_for('reports.report_clients') }}">Reporte Clientes</a>
-        <a href="{{ url_for('reports.report_contracts') }}">Reporte Contratos</a>
-        <a href="{{ url_for('reports.report_delays') }}">Reporte Atrasos</a>
-        <a href="{{ url_for('reports.report_incidents') }}">Reporte Novedades</a>
-
-        <div class="sidebar-section">Exportar Excel</div>
-        <a href="{{ url_for('exports.export_employees') }}">Excel Empleados</a>
-        <a href="{{ url_for('exports.export_clients') }}">Excel Clientes</a>
-        <a href="{{ url_for('exports.export_invoices') }}">Excel Facturas</a>
-        <a href="{{ url_for('exports.export_attendance') }}">Excel Asistencia</a>
-        <a href="{{ url_for('exports.export_payroll') }}">Excel Nómina</a>
-        {% endif %}
-
-        {% if current_user.role == 'admin' %}
-        <div class="sidebar-section">Sistema</div>
-        <a href="{{ url_for('backup.download_backup') }}">Backup</a>
-        {% endif %}
-
-        <div class="sidebar-section"></div>
-        <a href="{{ url_for('auth.logout') }}">Cerrar sesión</a>
-
+            <a href="{{ url_for('auth.logout') }}" class="sidebar-link logout-link">
+                <span class="nav-icon"><i class="fa-solid fa-right-from-bracket"></i></span>
+                <span class="nav-label">Cerrar sesión</span>
+            </a>
+        </nav>
     </aside>
 
-    <main class="main-content">
-
-        <div class="topbar">
-            <div class="topbar-title">
-                Sistema Administrativo
+    <div class="main-panel">
+        <header class="topbar">
+            <div class="topbar-left">
+                <div class="breadcrumb">Inicio / Dashboard</div>
+                <h1 class="topbar-title">Panel ejecutivo</h1>
             </div>
 
-            <div>
-                Usuario: <strong>{{ current_user.username }}</strong>
+            <div class="topbar-actions">
+                <label class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Buscar global">
+                </label>
+                <button class="icon-button" type="button" aria-label="Notificaciones">
+                    <i class="fa-solid fa-bell"></i>
+                </button>
+                <button class="icon-button" type="button" aria-label="Configuración">
+                    <i class="fa-solid fa-gear"></i>
+                </button>
+                <div class="user-pill">
+                    <div class="avatar">{{ current_user.username[:2]|upper }}</div>
+                    <div>
+                        <div class="user-pill-name">{{ current_user.username }}</div>
+                        <div class="user-pill-role">{{ current_user.role|title }}</div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </header>
 
-        <div class="content-wrapper">
-
+        <main class="content-area">
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}
@@ -116,14 +157,48 @@
             {% endwith %}
 
             {% block content %}{% endblock %}
-
-        </div>
-
-    </main>
+        </main>
+    </div>
 
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const sidebar = document.getElementById('sidebar');
+        const toggle = document.getElementById('sidebarToggle');
+
+        if (toggle) {
+            toggle.addEventListener('click', function () {
+                sidebar.classList.toggle('is-collapsed');
+            });
+        }
+
+        document.querySelectorAll('.nav-section-toggle').forEach(function (button) {
+            button.addEventListener('click', function () {
+                const targetId = this.getAttribute('data-target');
+                const target = document.getElementById(targetId);
+
+                document.querySelectorAll('.nav-submenu').forEach(function (submenu) {
+                    if (submenu !== target) {
+                        submenu.classList.remove('is-open');
+                    }
+                });
+
+                document.querySelectorAll('.nav-section-toggle').forEach(function (otherButton) {
+                    if (otherButton !== button) {
+                        otherButton.classList.remove('is-open');
+                    }
+                });
+
+                this.classList.toggle('is-open');
+                if (target) {
+                    target.classList.toggle('is-open');
+                }
+            });
+        });
+    });
+</script>
 
 </body>
 </html>

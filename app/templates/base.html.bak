@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pacific Security Force</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+            <h5>Pacific Security Force</h5>
+            <small>{{ current_user.role }}</small>
+        </div>
+
+        <div class="sidebar-section">Principal</div>
+        <a href="{{ url_for('main.index') }}">Inicio</a>
+        <a href="{{ url_for('search.global_search') }}">Buscar</a>
+
+        {% if current_user.role == 'admin' %}
+        <div class="sidebar-section">Administración</div>
+        <a href="{{ url_for('users.list_users') }}">Usuarios</a>
+        {% endif %}
+
+        {% if current_user.role in ['admin', 'rrhh', 'supervisor'] %}
+        <div class="sidebar-section">Personal</div>
+        <a href="{{ url_for('employees.list_employees') }}">Empleados</a>
+        <a href="{{ url_for('attendance.list_attendance') }}">Asistencia</a>
+        {% endif %}
+
+        {% if current_user.role in ['admin', 'rrhh'] %}
+        <a href="{{ url_for('permissions.list_permissions') }}">Permisos</a>
+        <a href="{{ url_for('vacations.list_vacations') }}">Vacaciones</a>
+        <a href="{{ url_for('delays.list_delays') }}">Atrasos</a>
+        <a href="{{ url_for('payroll.list_payroll') }}">Nómina</a>
+        {% endif %}
+
+        {% if current_user.role in ['admin', 'supervisor'] %}
+        <div class="sidebar-section">Operaciones</div>
+        <a href="{{ url_for('clients.list_clients') }}">Clientes</a>
+        <a href="{{ url_for('contracts.list_contracts') }}">Contratos</a>
+        <a href="{{ url_for('assignments.list_assignments') }}">Asignaciones</a>
+        <a href="{{ url_for('posts.list_posts') }}">Puestos</a>
+        <a href="{{ url_for('shifts.list_shifts') }}">Turnos</a>
+        <a href="{{ url_for('incidents.list_incidents') }}">Novedades</a>
+        <a href="{{ url_for('inventory.list_inventory') }}">Inventario</a>
+        {% endif %}
+
+        {% if current_user.role in ['admin', 'rrhh'] %}
+        <div class="sidebar-section">Finanzas</div>
+        <a href="{{ url_for('invoices.list_invoices') }}">Facturas / Recibos</a>
+        {% endif %}
+
+        {% if current_user.role in ['admin', 'rrhh', 'supervisor'] %}
+        <div class="sidebar-section">Archivo</div>
+        <a href="{{ url_for('documents.list_documents') }}">Documentos</a>
+        {% endif %}
+
+        {% if current_user.role in ['admin', 'rrhh', 'supervisor'] %}
+        <div class="sidebar-section">Reportes PDF</div>
+        <a href="{{ url_for('reports.report_employees') }}">Reporte Empleados</a>
+        <a href="{{ url_for('reports.report_clients') }}">Reporte Clientes</a>
+        <a href="{{ url_for('reports.report_contracts') }}">Reporte Contratos</a>
+        <a href="{{ url_for('reports.report_delays') }}">Reporte Atrasos</a>
+        <a href="{{ url_for('reports.report_incidents') }}">Reporte Novedades</a>
+
+        <div class="sidebar-section">Exportar Excel</div>
+        <a href="{{ url_for('exports.export_employees') }}">Excel Empleados</a>
+        <a href="{{ url_for('exports.export_clients') }}">Excel Clientes</a>
+        <a href="{{ url_for('exports.export_invoices') }}">Excel Facturas</a>
+        <a href="{{ url_for('exports.export_attendance') }}">Excel Asistencia</a>
+        <a href="{{ url_for('exports.export_payroll') }}">Excel Nómina</a>
+        {% endif %}
+
+        {% if current_user.role == 'admin' %}
+        <div class="sidebar-section">Sistema</div>
+        <a href="{{ url_for('backup.download_backup') }}">Backup</a>
+        {% endif %}
+
+        <div class="sidebar-section"></div>
+        <a href="{{ url_for('auth.logout') }}">Cerrar sesión</a>
+
+    </aside>
+
+    <main class="main-content">
+
+        <div class="topbar">
+            <div class="topbar-title">
+                Sistema Administrativo
+            </div>
+
+            <div>
+                Usuario: <strong>{{ current_user.username }}</strong>
+            </div>
+        </div>
+
+        <div class="content-wrapper">
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+
+        </div>
+
+    </main>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
